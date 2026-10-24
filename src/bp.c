@@ -2380,7 +2380,14 @@ pb_step_waiting4ok2disco(void)
 
 			(void) conf_get_b(bp_conf, "disco_when_done",
 			    &disco_when_done);
-			if (disco_when_done) {
+			/*
+			 * The disconnect/reconnect button windows don't
+			 * work under X-Plane 12: the buttons never appear,
+			 * so the tug would wait forever while still holding
+			 * the nosewheel steering override. Always
+			 * auto-disconnect on X-Plane 12.
+			 */
+			if (disco_when_done || bp_xp_ver >= 12000) {
 				/*
 				 * Don't actually show the interface, just
 				 * fire the disconnection command.
